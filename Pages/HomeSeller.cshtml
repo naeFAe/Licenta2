@@ -1,0 +1,79 @@
+﻿@page
+@model Licenta2.Pages.HomeSellerModel
+@{
+}
+
+<h1>Employee List</h1>
+<p>
+	<a asp-page="Seller">Upload Service Picture</a>
+</p>
+<br/>
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.Services[0].ServiceName)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model=>model.Services[0].ServiceName)
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach(var item in Model.Services)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.ServiceName)
+				</td>
+				<td>
+					<img src="data:image/jpg;base64,@item.EmpImageData" width="120px", height="120px"/>
+				</td>
+				<td>
+					<a asp-page="/ConfigureDays" asp-route-id="@item.AppointmentServicesId" class="btn btn-primary">Configure Days</a>
+					
+				@* 	<button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#daysModal" >
+						Configure Days
+					</button> *@
+
+					<!-- Modal -->
+					<div class="modal fade" id="daysModal" tabindex="-1" role="dialog" aria-labelledby="daysModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-dialog-scrollable" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="daysModalLabel">Configure Days</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+									<form method="post" asp-page-handler="SaveWeek">
+										@foreach (var week in item.Weeks){
+											@foreach(var day in week.Days)
+											{
+												<div>
+													<h4>@day.Name</h4>
+													<label>Start Hour:</label>
+													<select asp-for="@day.StartHour" asp-items="@day.HourOptions" class="form-control"></select>
+													<label>End Hour:</label>
+													<select asp-for="@day.EndHour" asp-items="@day.HourOptions" class="form-control"></select>
+												</div>
+											}
+											break;
+										}
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+											<button type="submit" class="btn btn-primary">Submit</button>
+										</div>
+									</form>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</td>
+				
+			</tr>
+		}
+	</tbody>
+</table>
